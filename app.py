@@ -44,7 +44,7 @@ def analyze():
         np_arr = np.frombuffer(img_bytes, np.uint8)
         frame = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
 
-        result = DeepFace.analyze(frame, actions=['emotion'], enforce_detection=False)
+        result = DeepFace.analyze(frame, actions=['emotion'], enforce_detection=False, detector_backend='opencv')
         emotion = result[0]['dominant_emotion']
         return jsonify({'emotion': emotion})
     except Exception as e:
@@ -67,7 +67,7 @@ def upload_file():
 
         # Predict emotion using DeepFace
         try:
-            result = DeepFace.analyze(img_path=save_path, actions=['emotion'], enforce_detection=False)
+            result = DeepFace.analyze(img_path=save_path, actions=['emotion'], enforce_detection=False, detector_backend='opencv')
             emotion = result[0]['dominant_emotion'] if isinstance(result, list) else result['dominant_emotion']
         except Exception as e:
             return jsonify({'error': str(e)}), 500
